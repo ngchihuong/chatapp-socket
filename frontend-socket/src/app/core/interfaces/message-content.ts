@@ -3,7 +3,7 @@ export interface MessageContent {
     content?: string;
     dateSent?: string;
     messageType?: MessageType;
-    messageRoomId: string;
+    messageRoomId?: string;
     sender?: string;
 }
 export enum MessageType {

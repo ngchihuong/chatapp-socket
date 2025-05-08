@@ -24,7 +24,7 @@ public class MessageContentMapper {
         return messageContentDto;
     }
 
-    public MessageContent toEntity(final MessageContent messageContent, final MessageContentDto messageContentDto) {
+    public MessageContent toEntity(MessageContentDto messageContentDto,final MessageContent messageContent  ) {
         messageContent.setId(messageContentDto.getId());
         messageContent.setContent(messageContentDto.getContent());
         messageContent.setDateSent(messageContentDto.getDateSent());

@@ -30,7 +30,7 @@
         <span (click)="isShowDialogChat = true" class="material-symbols-rounded">add_circle</span>
       </div>
       <div class="header-title">
-        dung
+        Huong
         <span class="header-title-small">Online</span>
       </div>
       <div class="header-setting">
@@ -50,124 +50,98 @@
           (selectedRoom)="selectMessageRoom($event)"></app-conversations-list>
       </div>
 
-      <!-- Chat area -->
-      <div class="chat-area" id="chat-area">
-        <div class="message-list" style="flex-grow: 1;">
-          <div class="chat-message">
-            <div class="online">
-              <img style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNL_ZnOTpXSvhf1UaK7beHey2BX42U6solRA&s"
-                alt="">
-            </div>
-            <div class="chat-message-content" title="12:12:12 11/11/2024">
-              <div class="chat-message-username">dung</div>
-              <div class="chat-message-text">Xin Chào</div>
-            </div>
-          </div>
-          <div class="chat-message">
-            <div class="online">
-              <img style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNL_ZnOTpXSvhf1UaK7beHey2BX42U6solRA&s"
-                alt="">
-            </div>
-            <div class="chat-message-content" title="12:12:12 11/11/2024">
-              <div class="chat-message-username">dung</div>
-              <div class="chat-message-text">Hi</div>
-            </div>
-          </div>
-          <div class="chat-message owner">
-            <div class="online">
-              <img style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNL_ZnOTpXSvhf1UaK7beHey2BX42U6solRA&s"
-                alt="">
-            </div>
-            <div class="chat-message-content" title="12:12:12 11/11/2024">
-              <div class="chat-message-username">dung</div>
-              <div class="chat-message-text">Ok</div>
-            </div>
-          </div>
-        </div>
-        <!-- Scroll to Unseen messages -->
-        <div style="text-align: center;">
-          <span class="material-symbols-rounded">arrow_upward</span>
-        </div>
-        <!-- Chat footer -->
-        <form class="chat-footer">
-          <div class="other-list">
-            <div class="emoji">
-              <span class="material-symbols-rounded">mood</span>
-            </div>
-          </div>
-          <input type="text" class="p-inputtext" id="message-input" placeholder="Type something here..." name="content"
-            autofocus />
-          <span class="send-button material-symbols-rounded">send</span>
-        </form>
-      </div>
+      <ng-container>
+        <!-- Chat area -->
+        <div class="chat-area" id="chat-area">
+          <app-message-contents-list [selectedMessageRoom]="selectedMessageRoom" [currentUser]="currentUser"
+            style="flex-grow: 1;">
 
-      <!-- Right side -->
-      <div class="detail-area">
-        <ng-container *ngIf="selectedMessageRoom.id">
+          </app-message-contents-list>
 
-          <div class="detail-header">
-            <ng-container *ngIf="!selectedMessageRoom.isGroup">
-              <ng-container *ngFor="let member of selectedMessageRoom.members">
-                <app-avatar *ngIf="member.username !== currentUser.username" [username]="member.username"
-                  width="44px"></app-avatar>
-              </ng-container>
-            </ng-container>
-            <div *ngIf="selectedMessageRoom.isGroup">
-              <img style="width: 44px; height: 44px; object-fit: cover; border-radius: 50%;"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNL_ZnOTpXSvhf1UaK7beHey2BX42U6solRA&s" alt="">
+          <!-- Scroll to Unseen messages -->
+          <div style="text-align: center;">
+            <span class="material-symbols-rounded">arrow_upward</span>
           </div>
-            <div class="detail-title">
-              <div class="detail-group-name">{{selectedMessageRoom | messageRoomName}}</div>
-              <span class="pi pi-pen-to-square cursor-pointer"></span>
-            </div>
-            <span class="detail-subtitle">Created by {{selectedMessageRoom.createdById}},
-              {{selectedMessageRoom.createdDate | date: "HH:mm:ss dd/MM/yyyy"}}</span>
-          </div>
-
-          <div class="theme">
-            <div class="theme-mode">
-              <p>Dark mode</p>
-              <input type="checkbox" />
-            </div>
-            <div class="theme-color">
-              <p>Color</p>
-              <select id="themeColorSelect">
-                <option value="blue">Blue</option>
-                <option value="green">Green</option>
-                <option value="red">Red</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="detail-members" *ngIf="selectedMessageRoom.isGroup">
-            <div class="detail-members-header">
-              <div class="detail-member-title">Members</div>
-              <span class="detail-member-add">Add members</span>
-            </div>
-            <div class="detail-members-list">
-              <div class="detail-member" *ngFor="let member of selectedMessageRoom.members">
-                <app-avatar [username]="member.username" width="44px">
-                </app-avatar>
-                <div class="detail-member-detail">
-                  <div class="detail-member-username">{{member.username}}</div>
-                  <span class="detail-member-subtitle">{{member.isAdmin ? "Admin" : ""}}</span>
-                </div>
-                <span class="material-symbols-rounded">more_vert</span>
+          <!-- Chat footer -->
+          <form class="chat-footer">
+            <div class="other-list">
+              <div class="emoji">
+                <span class="material-symbols-rounded">mood</span>
               </div>
             </div>
-          </div>
+            <input [(ngModel)]="messageToSend.content" (keydown.enter)="sendMessage()" type="text" class="p-inputtext"
+              id="message-input" placeholder="Type something here..." name="content" autofocus />
+            <span class="send-button material-symbols-rounded">send</span>
+          </form>
+        </div>
 
-          <div class="leave-group">
-            <p>
-              <span class="material-symbols-rounded">logout</span>
-              Leave group
-            </p>
-          </div>
-        </ng-container>
-      </div>
+        <!-- Right side -->
+        <div class="detail-area">
+          <ng-container *ngIf="selectedMessageRoom.id">
+
+            <div class="detail-header">
+              <ng-container *ngIf="!selectedMessageRoom.isGroup">
+                <ng-container *ngFor="let member of selectedMessageRoom.members">
+                  <app-avatar *ngIf="member.username !== currentUser.username" [username]="member.username"
+                    width="44px"></app-avatar>
+                </ng-container>
+              </ng-container>
+              <div *ngIf="selectedMessageRoom.isGroup">
+                <img style="width: 44px; height: 44px; object-fit: cover; border-radius: 50%;"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNL_ZnOTpXSvhf1UaK7beHey2BX42U6solRA&s"
+                  alt="">
+              </div>
+              <div class="detail-title">
+                <div class="detail-group-name">{{selectedMessageRoom | messageRoomName}}</div>
+                <span class="pi pi-pen-to-square cursor-pointer"></span>
+              </div>
+              <span class="detail-subtitle">Created by {{selectedMessageRoom.createdById}},
+                {{selectedMessageRoom.createdDate | date: "HH:mm:ss dd/MM/yyyy"}}</span>
+            </div>
+
+            <div class="theme">
+              <div class="theme-mode">
+                <p>Dark mode</p>
+                <input type="checkbox" />
+              </div>
+              <div class="theme-color">
+                <p>Color</p>
+                <select id="themeColorSelect">
+                  <option value="blue">Blue</option>
+                  <option value="green">Green</option>
+                  <option value="red">Red</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="detail-members">
+              <div class="detail-members-header" *ngIf="selectedMessageRoom.isGroup">
+                <div class="detail-member-title">Members</div>
+                <span class="detail-member-add">Add members</span>
+              </div>
+              <div class="detail-members-list" *ngIf="selectedMessageRoom.isGroup">
+                <div class="detail-member" *ngFor="let member of selectedMessageRoom.members">
+                  <app-avatar [username]="member.username" width="44px">
+                  </app-avatar>
+                  <div class="detail-member-detail">
+                    <div class="detail-member-username">{{member.username}}</div>
+                    <span class="detail-member-subtitle">{{member.isAdmin ? "Admin" : ""}}</span>
+                  </div>
+                  <span class="material-symbols-rounded">more_vert</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="leave-group">
+              <p>
+                <span class="material-symbols-rounded">logout</span>
+                Leave group
+              </p>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
     </div>
   </div>
 </body>
